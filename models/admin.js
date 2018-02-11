@@ -5,13 +5,10 @@ var Schema = mongoose.Schema;
 
 var adminSchema = new Schema({
 	"userName"         : {"type" : String,  "required" : true, "unique" : true},
+	"name"	           : {"type" : String,  "required" : true},
+	"phone"            : {"type" : Number,  "required" : true},
 	"password"         : {"type" : String,  "required" : true},
-	"collegeName"      : {"type" : String,  "required" : true},
-	"adminType"		   : {"type" : String,  "required" : true}
+	"nodalCenter"      : {"type" : String,  "required" : true}
 })
 
 mongoose.model("Admin",adminSchema,"admin");
-
-
-
-//res.json("msg" : "OK");

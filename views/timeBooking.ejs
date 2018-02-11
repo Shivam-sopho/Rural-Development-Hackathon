@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Book Time</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script type="text/javascript">
+
+        	function getDate(){
+        		var parameters = {};
+        		parameters.nodalCenter = document.getElementById("nodalCenter").value;
+        		console.log(parameters);
+        		$.post('/getDate',parameters,function(data){
+        			$("#date").append("<option>data[i]</option>");
+				})
+        	}
+        	function getTime(){
+        		var parameters = {};
+        		parameters.date = document.getElementById("date").value;
+        		console.log(parameters);
+        		$.post('/getTime',parameters,function(data){
+        			$("#time").append("<option>data[i]</option>");
+				})
+        	}
+        </script>
+    </head>
+    <body>
+
+
+
+			<select onchange="getDate()" id="nodalCenter">
+  				<% for(var i=0;i<nodalCenter.length;i++) {%>
+  					<option><%= nodalCenter[i].nodalCenter %></option>
+  				<% } %>
+			</select>
+
+			<select onchange="getTime()" id="date">
+				<% for(var i=0;i<nodalCenter.length;i++) {%>
+  					<option><%= nodalCenter[i].date %></option>
+  				<% } %>
+			</select>
+
+			<select onchange="getTime()" id="date">
+				<% for(var i=0;i<nodalCenter.length;i++) {%>
+  					<option><%= nodalCenter[i].time %></option>
+  				<% } %>
+			</select>
+
+
+
+        <div class="container">
+			<header>
+				<h1><strong>Booking Time</strong></h1>
+			</header>
+			
+			<section class="main">
+				<form class="form-2" action="/bookedtime" method="post">
+					<h1><span class="log-in">Book</span></h1>
+					<p class="float">
+						<label for="nodalCenter">Name</label>
+						<input type="text" name="userName" placeholder="Name">
+					</p>
+					<br>
+					<p class="float">
+						<label for="date">Email Id</label>
+						<input type="text" name="email" placeholder="Email">
+					</p>
+					<br>
+					<p class="float">
+						<label for="time">Phone</label>
+						<input type="text" name="phone" placeholder="Phone">
+					</p>
+					<br>
+					<p class="clearfix">     
+						<input type="submit" name="submit" value="Book">
+					</p>
+				</form>​​
+			</section>
+
+			
+        </div>
+    </body>
+</html>
