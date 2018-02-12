@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Registeration</title>
+  <title>Admin Registeration</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">  
   <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
@@ -72,5 +72,71 @@
     })
   </script>
   <script src="js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<head>
+  <!-- General meta information -->
+  <title>Login Form by Oussama Afellad</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="robots" content="index, follow" />
+  <meta charset="utf-8" />
+  <!-- // General meta information -->
+  
+  
+  <!-- Load Javascript -->
+  <script type="text/javascript" src="./adminjs/jquery.js"></script>
+  <script type="text/javascript" src="./adminjs/jquery.query-2.1.7.js"></script>
+  <script type="text/javascript" src="./adminjs/rainbows.js"></script>
+  <!-- // Load Javascipt -->
+
+  <!-- Load stylesheets -->
+  <link type="text/css" rel="stylesheet" href="admincss/style.css" media="screen" />
+  <!-- // Load stylesheets -->
+</head>
+<body>
+  <div id="wrapper">
+    <div id="wrappertop"></div>
+    <div id="wrappermiddle">
+      <h2>Login</h2>
+      <div id="username_input">
+       <form class="form-signin" action="/successfuladminregister" method="post">
+          <input type="text" name="link" id="url" value="E-mail Address" onclick="this.value = ''">
+        </div>
+        <div id="password_input">
+          <input type="password" name="link" id="url" value="Password" onclick="this.value = ''">
+        </div>
+        <div id="submit">
+        
+        <input type="image" src="./images/submit_hover.png" id="submit1" value="Sign In">
+        <input type="image" src="./images/submit.png" id="submit2" value="Sign In">
+        </form>
+      </div>
+
+
+      <div id="links_left">
+
+      <a href="#">Forgot your Password?</a>
+
+      </div>
+
+      <div id="links_right"><a href="#">Not a Member Yet?</a></div>
+
+    </div>
+
+    <div id="wrapperbottom"></div>
+    
+    <div id="powered">
+    <p>Powered by <a href="http://www.premiumfreebies.eu">Premiumfreebies Control Panel</a></p>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -108,7 +108,9 @@ app.post("/userLoggedin",(req,res)=>{
     });
 });
 
-
+app.get('/userDashboard',function(req,res){
+	res.render('userDashboard.ejs');
+})
 
 
 //Admin Register
@@ -196,9 +198,21 @@ app.post('/booked',function(req,res){
 
 //Checking Appointments
 
+// NOTE : Carry the info regarding admin's nodal center for checking its appointments at the time of login!!!
 app.get('/checkBooking',function(req,res){
-	res.render('/checkBooking.ejs');
+	var send = {};
+	appointmentModel.find({"filled" : 1},function(err,data){
+		if(err)
+			throw err;
+		else{
+			send.nodalCenter = data;
+			console.log(send);
+			res.render('checkBooking.ejs',send);
+		}
+	})
 });
+
+
 
 
 //User Time Booking
@@ -208,56 +222,70 @@ app.get('/timeBooking',function(req,res){
 		if(err)
 			throw err;
 		else{
-			//console.log(data);
 			send.nodalCenter = data;
-			console.log(send);
 			res.render('timeBooking.ejs',send);
 		}
 	})
 });
 
+var nodal;
 app.post("/getDate",function(req,res){
-	appointmentModel.find({"nodalCenter":req.body.nodalCenter},function(err,data){
+	appointmentModel.find({"nodalCenter":req.body.nodalCenter,"email":""},function(err,data){
 		if(err)
 			throw err;
 		else{
-			res.send(data)
-		}
-	})
-})
-
-app.post("/getTime",function(req,res){
-	appointmentModel.find({"date":req.body.date},function(err,data){
-		if(err)
-			throw err;
-		else{
-			console.log(data);
+			nodal=req.body.nodalCenter;
+			//console.log(data);
 			res.send(data);
 		}
 	})
 })
 
-
-app.post('/bookedbyUser',function(req,res){
-	var appoint = new appointmentModel({
-		"userName"    	 : req.body.userName,
-        "phone"	         : req.body.phone,
-        "email"	 	  	 : req.body.email	
-	});
-	appoint.save((err,data)=>{
+app.post("/getTime",function(req,res){
+	appointmentModel.find({"date":req.body.date,"email":"","nodalCenter":nodal},function(err,data){
 		if(err)
-		{
-			console.log(err);
-			res.render("bookingCreateError.ejs");
-		}
-		else
-		{
-			res.render("bookingCreateSuccessful.ejs");
+			throw err;
+		else{
+			//console.log(data);
+			res.send(data);
 		}
 	})
-});
- 
+})
 
+app.post("/bookedTime",(req,res)=>{
+	//console.log(req.body)
+	appointmentModel.remove({ "nodalCenter": req.body.nodalCenter, "date": req.body.date , "time": req.body.time },function(err,data){
+   		if(err)
+   			console.log(err);
+   		else
+   		{
+   			var appoint = new appointmentModel({
+				"nodalCenter"    : req.body.nodalCenter,
+        		"date"	         : req.body.date,
+        		"time"	 	  	 : req.body.time,
+        		"userName"		 : req.body.userName,
+   				"phone" 		 : req.body.phone,
+   				"email" 		 : req.body.email,
+   				"filled"	     : 1
+   			});
+			appoint.save((err,data)=>{
+			if(err)
+			{
+				console.log(err);
+				res.render("bookingCreateError.ejs");
+			}
+			else
+			{	
+				res.render("bookingCreateSuccessful.ejs");
+			}
+		});
+  	}
+  });
+});
+
+
+
+//Enrollment
 app.get('/enroll',function(req,res){
 	res.render('enroll.ejs');
 });
@@ -267,7 +295,7 @@ app.post('/successfulenrolled',function(req,res){
 		"userName"       : req.body.userName,
         "phone"	 	  	 : req.body.phone,
         "nodalCenter"	 : req.body.nodalCenter,
-        "date"			 : req.body.date,
+        "enrollDate"	 : req.body.enrollDate,
         "address"		 : req.body.address,
         "email"			 : req.body.email	
 	});
