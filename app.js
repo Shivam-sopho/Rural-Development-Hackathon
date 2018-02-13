@@ -145,7 +145,7 @@ app.post('/successfuladminregister',function(req,res){
 	})
 });
 
-
+var admlog;
 //Admin Login
 app.get('/adminLogin',function(req,res){
 	res.render("adminLogin.ejs");
@@ -157,6 +157,7 @@ app.post("/adminLoggedin",(req,res)=>{
     	if (data1.length) {
     			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
                 	if(data){
+                			admlog=data1[0].nodalCenter;
                 		 	res.render("adminDashboard.ejs");
                 	}
                 	else{
@@ -197,20 +198,22 @@ app.post('/booked',function(req,res){
 
 
 //Checking Appointments
+admlog='Ranchi';
 
 // NOTE : Carry the info regarding admin's nodal center for checking its appointments at the time of login!!!
 app.get('/checkBooking',function(req,res){
 	var send = {};
-	appointmentModel.find({"filled" : 1},function(err,data){
+	appointmentModel.find({"nodalCenter" : admlog, "filled":1},function(err,data){
 		if(err)
 			throw err;
 		else{
-			send.nodalCenter = data;
+			send.date = data;
 			console.log(send);
 			res.render('checkBooking.ejs',send);
 		}
 	})
 });
+
 
 
 
