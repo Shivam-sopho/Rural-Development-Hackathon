@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
+var passport = require('passport');
+var expressSession = require('express-session');
 const bcrypt = require('bcrypt');
 const request = require("request");
 const port = process.env.PORT || 8080;
@@ -22,8 +24,7 @@ app.set('view engine', 'jade');
 mongoose.Promise = global.Promise
 mongoose.connect("mongodb://ruraldev:ruraldev@ds125578.mlab.com:25578/rural-development");
 
-var passport = require('passport');
-var expressSession = require('express-session');
+
 app.use(expressSession({secret: 'mySecretKey'}));
 app.use(passport.initialize());
 app.use(passport.session());
