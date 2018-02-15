@@ -20,7 +20,14 @@
             </div>
             <div class="media-container-column title col-12 col-lg-7 col-md-6">
                 <h2 class="align-right mbr-bold mbr-white pb-3 mbr-fonts-style display-2">
-                    GRADIENT BACKGROUND
+                    <% var array = [] %>
+    				<% for(var i=0;i<nodalCenter.length;i++) { %>
+    					<% array.push(nodalCenter[i].nodalCenter) %>
+    				<% } %>
+    				<% array = Array.from(new Set(array)) %>
+    				<% for(var i=0;i<array.length;i++) {%>
+  						<%= array[i] %>
+  					<% } %>
                 </h2>
                 
             </div>
@@ -35,7 +42,7 @@
             <div class="card p-3 col-12 col-md-6 col-lg-3">
                 <div class="card-wrapper">
                     <div class="card-img">
-                        <img src="images/images-300x168.jpg" alt="Mobirise" title="">
+                        <img src="assets/images/images-300x168.jpg" alt="Mobirise" title="">
                     </div>
                     <div class="card-box">
                         
@@ -49,7 +56,7 @@
             <div class="card p-3 col-12 col-md-6 col-lg-3">
                 <div class="card-wrapper">
                     <div class="card-img">
-                        <img src="images/images-1-259x194.jpg" alt="Mobirise" title="">
+                        <img src="assets/images/images-1-259x194.jpg" alt="Mobirise" title="">
                     </div>
                     <div class="card-box">
                         
@@ -64,7 +71,7 @@
             <div class="card p-3 col-12 col-md-6 col-lg-3">
                 <div class="card-wrapper">
                     <div class="card-img">
-                        <img src="images/download-269x187.jpg" alt="Mobirise" title="">
+                        <img src="assets/images/download-269x187.jpg" alt="Mobirise" title="">
                     </div>
                     <div class="card-box">
                         
@@ -78,7 +85,7 @@
             <div class="card p-3 col-12 col-md-6 col-lg-3">
                 <div class="card-wrapper">
                     <div class="card-img">
-                        <img src="images/images-2-287x176.jpg" alt="Mobirise" title="">
+                        <img src="assets/images/images-2-287x176.jpg" alt="Mobirise" title="">
                     </div>
                     <div class="card-box">
                         

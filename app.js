@@ -154,18 +154,17 @@ app.post('/successfulAdminRegister',function(req,res){
 
 var admlog;
 //Admin Login
-app.get('/adminLogin',function(req,res){
-	res.render("adminLogin.ejs");
-})
 
 var salt = bcrypt.genSaltSync(15);
 app.post("/adminLoggedin",(req,res)=>{
     adminModel.find({"userName":req.body.userName},(error,data1)=>{
     	if (data1.length) {
+    		var send = {};
+    		send.nodalCenter=data1;
     			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
                 	if(data){
                 			admlog=data1[0].nodalCenter;
-                		 	res.render("adminDashboard.ejs");
+                		 	res.render("adminDashboard.ejs",send);
                 	}
                 	else{
                     	res.render("adminErrorMessage.ejs");
@@ -178,7 +177,9 @@ app.post("/adminLoggedin",(req,res)=>{
     });
 });
 
-
+app.get('/index',function(req,res){
+	res.render('index.ejs')
+})
 //Booking Creation
 app.get('/createBooking',function(req,res){
 	res.render('createBooking.ejs');
