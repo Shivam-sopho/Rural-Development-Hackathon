@@ -42,7 +42,7 @@ app.use('/users', users);
 
 require('./models/User');
 const userModel = mongoose.model('User');
-require('./models/Admin');
+require('./models/admin');
 const adminModel = mongoose.model('Admin');
 require('./models/Appointment');
 const appointmentModel = mongoose.model('Appointment');
