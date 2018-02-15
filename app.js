@@ -50,6 +50,14 @@ require('./models/Enrollment');
 const enrollmentModel = mongoose.model('Enrollment');
 
 
+app.get('/home',function(req,res){
+	res.render('home.ejs');
+});
+
+app.get('/admin',function(req,res){
+	res.render('admin.ejs');
+});
+
 //User Register
 app.get('/userRegister',function(req,res){
 	res.render('userRegister.ejs');
@@ -114,21 +122,20 @@ app.get('/userDashboard',function(req,res){
 
 
 //Admin Register
-app.get('/adminRegister',function(req,res){
-	res.render('adminRegister.ejs');
-});
 
 var salt = bcrypt.genSaltSync(15);
 var cryptedPassword;
 var crypt=function(password){
 	cryptedPassword = bcrypt.hashSync(password, salt);
 }
-app.post('/successfuladminregister',function(req,res){
+app.post('/successfulAdminRegister',function(req,res){
 	crypt(req.body.password);
 	var adm = new adminModel({
 		"userName"       : req.body.userName,
         "name"	         : req.body.name,
         "phone"	 	  	 : req.body.phone,
+        "govtId"	  	 : req.body.govtId,
+        "email"	 	  	 : req.body.email,
         "nodalCenter"	 : req.body.nodalCenter,
         "password"       : cryptedPassword, 	
 	});
@@ -147,18 +154,17 @@ app.post('/successfuladminregister',function(req,res){
 
 var admlog;
 //Admin Login
-app.get('/adminLogin',function(req,res){
-	res.render("adminLogin.ejs");
-})
 
 var salt = bcrypt.genSaltSync(15);
 app.post("/adminLoggedin",(req,res)=>{
     adminModel.find({"userName":req.body.userName},(error,data1)=>{
     	if (data1.length) {
+    		var send = {};
+    		send.nodalCenter=data1;
     			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
                 	if(data){
                 			admlog=data1[0].nodalCenter;
-                		 	res.render("adminDashboard.ejs");
+                		 	res.render("adminDashboard.ejs",send);
                 	}
                 	else{
                     	res.render("adminErrorMessage.ejs");
@@ -171,7 +177,9 @@ app.post("/adminLoggedin",(req,res)=>{
     });
 });
 
-
+app.get('/index',function(req,res){
+	res.render('index.ejs')
+})
 //Booking Creation
 app.get('/createBooking',function(req,res){
 	res.render('createBooking.ejs');
