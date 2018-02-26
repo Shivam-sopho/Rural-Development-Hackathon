@@ -1,11 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Book Time</title>
-    </head>
-    <body>
-        <div class="container">
-			<a href ="/timeBooking">Click here!</a> to book time.
+<% include header.ejs %>
+
+<section class="mbr-section content8 cid-qJEXTZcQZt" id="content8-22">
+    <div class="container">
+        <div class="media-container-row title">
+            <div class="col-12 col-md-8">
+                <div class="mbr-section-btn align-center"><a class="btn btn-primary-outline display-4" href="/adminDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>Dashboard</a>
+                    <a class="btn btn-black-outline display-4" href="admin"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a></div>
+            </div>
         </div>
-    </body>
-</html>
+    </div>
+</section>
+
+
+<section class="features3 cid-qJESzB95bg" id="features3-21">
+    
+    <div class="container">
+        <div class="media-container-row">
+            <div class="card p-3 col-12 col-md-6 col-lg-3">
+                <div class="card-wrapper">
+                    <div class="card-img">
+                        <img src="assets/images/images-300x168.jpg" alt="Mobirise" title="">
+                    </div>
+                    <div class="card-box">
+                        
+                        <p class="mbr-text mbr-fonts-style display-7">It is the time to create appointment timings.</p>
+                    </div>
+                    <div class="mbr-section-btn text-center"><a href="/createBooking" class="btn btn-primary display-4">
+                            Create Appointments</a></div>
+                </div>
+            </div>
+
+            <div class="card p-3 col-12 col-md-6 col-lg-3">
+                <div class="card-wrapper">
+                    <div class="card-img">
+                        <img src="assets/images/images-1-259x194.jpg" alt="Mobirise" title="">
+                    </div>
+                    <div class="card-box">
+                        
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Lets check booked appointments.</p>
+                    </div>
+                    <div class="mbr-section-btn text-center"><a href="/checkBooking" class="btn btn-primary display-4">
+                            Check Appointments</a></div>
+                </div>
+            </div>
+
+            <div class="card p-3 col-12 col-md-6 col-lg-3">
+                <div class="card-wrapper">
+                    <div class="card-img">
+                        <img src="assets/images/download-269x187.jpg" alt="Mobirise" title="">
+                    </div>
+                    <div class="card-box">
+                        
+                        <p class="mbr-text mbr-fonts-style display-7">Enroll new users to courses.</p>
+                    </div>
+                    <div class="mbr-section-btn text-center"><a href="enroll" class="btn btn-primary display-4">
+                            Enroll New Users</a></div>
+                </div>
+            </div>
+
+            <div class="card p-3 col-12 col-md-6 col-lg-3">
+                <div class="card-wrapper">
+                    <div class="card-img">
+                        <img src="assets/images/images-2-287x176.jpg" alt="Mobirise" title="">
+                    </div>
+                    <div class="card-box">
+                        
+                        <p class="mbr-text mbr-fonts-style display-7">
+                           Lets check the enrolled students.</p>
+                    </div>
+                    <div class="mbr-section-btn text-center"><a href="checkEnrollments" class="btn btn-primary display-4">
+                            Check Enrolled Users</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%include footer.ejs %>

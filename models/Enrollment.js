@@ -10,7 +10,6 @@ var enrollmentSchema = new Schema({
 	"phone"  	       : {"type" : Number, "required" : true},
 	"email"		   	   : {"type" : String, "required" : true},
 	"address"		   : {"type" : String, "required" : true},
-	"endDate"		   : {"type" : String, "default" : ""},
 	"adminRemarks"	   : {"type" : String, "default" : ""},
 	"customerFeedback" : {"type" : String, "default" : ""},
 	"customerRating"   : {"type" : String, "default" : ""}

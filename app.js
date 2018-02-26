@@ -59,67 +59,10 @@ app.get('/admin',function(req,res){
 	res.render('admin.ejs');
 });
 
-//User Register
-app.get('/userRegister',function(req,res){
-	res.render('userRegister.ejs');
+app.get('/userL',function(req,res){
+	res.render('userL.ejs');
 });
 
-var salt = bcrypt.genSaltSync(15);
-var cryptedPassword;
-var crypt=function(password){
-	cryptedPassword = bcrypt.hashSync(password, salt);
-}
-app.post('/successfulRegister',function(req,res){
-	crypt(req.body.password);
-	var usr = new userModel({
-		"email"          : req.body.email,
-		"userName"       : req.body.userName,
-        "name"	         : req.body.name,
-        "phone"	 	  	 : req.body.phone,
-        "address"		 : req.body.address,
-        "password"       : cryptedPassword, 	
-	});
-	usr.save((err,data)=>{
-		if(err)
-		{
-			console.log(err);
-			res.render("userError.ejs");
-		}
-		else
-		{
-			res.render("userSuccessful.ejs");
-		}
-	})
-});
-
-
-//User Login
-app.get('/userLogin',function(req,res){
-	res.render("userLogin.ejs");
-})
-
-var salt = bcrypt.genSaltSync(15);
-app.post("/userLoggedin",(req,res)=>{
-    userModel.find({"userName":req.body.userName},(error,data1)=>{
-    	if (data1.length) {
-    			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
-                	if(data){
-                		 	res.render("userDashboard.ejs");
-                	}
-                	else{
-                    	res.render("userErrorMessage.ejs");
-                	}
-            	});
-		}
-    	else{
-    		 res.render("userErrorMessage.ejs");
-    	}
-    });
-});
-
-app.get('/userDashboard',function(req,res){
-	res.render('userDashboard.ejs');
-})
 
 
 //Admin Register
@@ -156,11 +99,11 @@ app.post('/successfulAdminRegister',function(req,res){
 var admlog;
 //Admin Login
 
+var send = {};
 var salt = bcrypt.genSaltSync(15);
 app.post("/adminLoggedin",(req,res)=>{
     adminModel.find({"userName":req.body.userName},(error,data1)=>{
     	if (data1.length) {
-    		var send = {};
     		send.nodalCenter=data1;
     			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
                 	if(data){
@@ -178,9 +121,11 @@ app.post("/adminLoggedin",(req,res)=>{
     });
 });
 
-app.get('/index',function(req,res){
-	res.render('index.ejs')
-})
+app.get('/adminDashboard', function(req,res){
+	res.render('adminDashboard.ejs',send);
+});
+
+
 //Booking Creation
 app.get('/createBooking',function(req,res){
 	res.render('createBooking.ejs');
@@ -188,9 +133,9 @@ app.get('/createBooking',function(req,res){
 
 app.post('/booked',function(req,res){
 	var appoint = new appointmentModel({
-		"nodalCenter"    : req.body.nodalCenter,
+		"nodalCenter"    : admlog,
         "date"	         : req.body.date,
-        "time"	 	  	 : req.body.time	
+        "time"	 	  	 : req.body.time
 	});
 	appoint.save((err,data)=>{
 		if(err)
@@ -207,25 +152,145 @@ app.post('/booked',function(req,res){
 
 
 //Checking Appointments
-admlog='Ranchi';
 
 // NOTE : Carry the info regarding admin's nodal center for checking its appointments at the time of login!!!
 app.get('/checkBooking',function(req,res){
-	var send = {};
-	appointmentModel.find({"nodalCenter" : admlog, "filled":1},function(err,data){
+	var ssend = {};
+	appointmentModel.find({"nodalCenter" : admlog, "filled" : 1},function(err,data){
 		if(err)
 			throw err;
 		else{
-			send.date = data;
+			ssend.date = data;
 			console.log(send);
-			res.render('checkBooking.ejs',send);
+			res.render('checkBooking.ejs',ssend);
 		}
 	})
 });
 
 
+//Enrollment
+app.get('/enroll',function(req,res){
+	res.render('enroll.ejs');
+});
+
+app.post('/successfulenrolled',function(req,res){
+	var enrol = new enrollmentModel({
+		"userName"       : req.body.userName,
+        "phone"	 	  	 : req.body.phone,
+        "nodalCenter"	 : admlog,
+        "enrollDate"	 : req.body.enrollDate,
+        "address"		 : req.body.address,
+        "email"			 : req.body.email,
+        "customerFeedback" : 'Not provide',
+		"adminReview"    : 'Not provided',
+		"customerRating" : 'Not provided'
+	});
+	enrol.save((err,data)=>{
+		if(err)
+		{
+			console.log(err);
+			res.render("enrolledError.ejs");
+		}
+		else
+		{
+			res.render("enrolledSuccessful.ejs");
+		}
+	})
+});
 
 
+//Check Enrollment
+app.get('/checkEnrollments',function(req,res){
+	var sssend = {};
+	enrollmentModel.find({"nodalCenter" : admlog},function(err,data){
+		if(err)
+			throw err;
+		else{
+			sssend.students = data;
+			//console.log(send);
+			res.render('checkEnrollments.ejs',sssend);
+		}
+	})
+});
+
+
+//Logout
+app.get('/admLogout', function(req,res){
+	res.render('admin.ejs');
+})
+
+
+
+
+
+
+//User Register
+
+
+var salt = bcrypt.genSaltSync(15);
+var cryptedPassword;
+var crypt=function(password){
+	cryptedPassword = bcrypt.hashSync(password, salt);
+}
+app.post('/successfulUserRegister',function(req,res){
+	crypt(req.body.password);
+	var usr = new userModel({
+		"email"          : req.body.email,
+		"userName"       : req.body.userName,
+        "name"	         : req.body.name,
+        "phone"	 	  	 : req.body.phone,
+        "address"		 : req.body.address,
+        "password"       : cryptedPassword, 	
+	});
+	usr.save((err,data)=>{
+		if(err)
+		{
+			console.log(err);
+			res.render("userError.ejs");
+		}
+		else
+		{
+			res.render("userSuccessful.ejs");
+		}
+	})
+});
+
+
+var userlog;
+var userPhone;
+var userEmail;
+
+//User Login
+app.get('/userLogin',function(req,res){
+	res.render("userLogin.ejs");
+})
+
+var salt = bcrypt.genSaltSync(15);
+app.post("/userLoggedin",(req,res)=>{
+    userModel.find({"userName":req.body.userName},(error,data1)=>{
+    	if (data1.length) {
+    			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
+                	if(data){
+								userlog=data1[0].userName;
+								userPhone=data1[0].phone;
+								userEmail=data1[0].email;
+                		 		res.render("userDashboard.ejs");
+                	}
+                	else{
+                    	res.render("userErrorMessage.ejs");
+                	}
+            	});
+		}
+    	else{
+    		 res.render("userErrorMessage.ejs");
+    	}
+    });
+});
+
+
+app.get('/userDashboard', function(req,res){
+	res.render('userDashboard.ejs');
+})
 
 //User Time Booking
 app.get('/timeBooking',function(req,res){
@@ -275,9 +340,9 @@ app.post("/bookedTime",(req,res)=>{
 				"nodalCenter"    : req.body.nodalCenter,
         		"date"	         : req.body.date,
         		"time"	 	  	 : req.body.time,
-        		"userName"		 : req.body.userName,
-   				"phone" 		 : req.body.phone,
-   				"email" 		 : req.body.email,
+        		"userName"		 : userlog,
+   				"phone" 		 : userPhone,
+   				"email" 		 : userEmail,
    				"filled"	     : 1
    			});
 			appoint.save((err,data)=>{
@@ -297,34 +362,9 @@ app.post("/bookedTime",(req,res)=>{
 
 
 
-//Enrollment
-app.get('/enroll',function(req,res){
-	res.render('enroll.ejs');
-});
-
-app.post('/successfulenrolled',function(req,res){
-	var enrol = new enrollmentModel({
-		"userName"       : req.body.userName,
-        "phone"	 	  	 : req.body.phone,
-        "nodalCenter"	 : req.body.nodalCenter,
-        "enrollDate"	 : req.body.enrollDate,
-        "address"		 : req.body.address,
-        "email"			 : req.body.email	
-	});
-	enrol.save((err,data)=>{
-		if(err)
-		{
-			console.log(err);
-			res.render("enrolledError.ejs");
-		}
-		else
-		{
-			res.render("enrolledSuccessful.ejs");
-		}
-	})
-});
-
-
+app.get('/userLogout', function(req,res){
+	res.render('user.ejs');
+})
 
 
 app.listen(port,(err)=>{
