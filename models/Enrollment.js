@@ -4,7 +4,7 @@ const validator = require('validator');
 var Schema = mongoose.Schema;
 
 var enrollmentSchema = new Schema({
-	"userName"         : {"type" : String, "required" : true},
+	"name"         : {"type" : String, "required" : true},
 	"nodalCenter"      : {"type" : String, "required" : true},
 	"enrollDate"       : {"type" : String, "required" : true},
 	"phone"  	       : {"type" : Number, "required" : true},

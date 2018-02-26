@@ -131,9 +131,10 @@ app.get('/createBooking',function(req,res){
 	res.render('createBooking.ejs');
 });
 
-app.post('/booked',function(req,res){
+app.post('/bookingCreateSuccessful',function(req,res){
+	console.log(admlog);
 	var appoint = new appointmentModel({
-		"nodalCenter"    : admlog,
+		"nodalCenter"    : req.body.nodalCenter,
         "date"	         : req.body.date,
         "time"	 	  	 : req.body.time
 	});
@@ -175,9 +176,9 @@ app.get('/enroll',function(req,res){
 
 app.post('/successfulenrolled',function(req,res){
 	var enrol = new enrollmentModel({
-		"userName"       : req.body.userName,
+		"name"       : req.body.name,
         "phone"	 	  	 : req.body.phone,
-        "nodalCenter"	 : admlog,
+        "nodalCenter"	 : req.body.nodalCenter,
         "enrollDate"	 : req.body.enrollDate,
         "address"		 : req.body.address,
         "email"			 : req.body.email,
