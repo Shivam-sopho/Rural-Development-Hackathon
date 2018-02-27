@@ -25,10 +25,6 @@ mongoose.Promise = global.Promise
 mongoose.connect("mongodb://ruraldev:ruraldev@ds125578.mlab.com:25578/rural-development");
 
 
-app.use(expressSession({secret: 'mySecretKey'}));
-app.use(passport.initialize());
-app.use(passport.session());
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 let models_path =  './models';
@@ -58,11 +54,6 @@ app.get('/home',function(req,res){
 app.get('/admin',function(req,res){
 	res.render('admin.ejs');
 });
-
-app.get('/userL',function(req,res){
-	res.render('userL.ejs');
-});
-
 
 
 //Admin Register
@@ -227,6 +218,9 @@ app.get('/admLogout', function(req,res){
 
 //User Register
 
+app.get('/userL',function(req,res){
+	res.render('userL.ejs');
+});
 
 var salt = bcrypt.genSaltSync(15);
 var cryptedPassword;
@@ -261,10 +255,6 @@ var userlog;
 var userPhone;
 var userEmail;
 
-//User Login
-app.get('/userLogin',function(req,res){
-	res.render("userLogin.ejs");
-})
 
 var salt = bcrypt.genSaltSync(15);
 app.post("/userLoggedin",(req,res)=>{
@@ -324,7 +314,7 @@ app.post("/getTime",function(req,res){
 		if(err)
 			throw err;
 		else{
-			//console.log(data);
+			console.log(data);
 			res.send(data);
 		}
 	})
@@ -341,9 +331,9 @@ app.post("/bookedTime",(req,res)=>{
 				"nodalCenter"    : req.body.nodalCenter,
         		"date"	         : req.body.date,
         		"time"	 	  	 : req.body.time,
-        		"userName"		 : userlog,
-   				"phone" 		 : userPhone,
-   				"email" 		 : userEmail,
+        		"userName"		 : req.body.userName,
+   				"phone" 		 : user.body.phone,
+   				"email" 		 : user.body.email,
    				"filled"	     : 1
    			});
 			appoint.save((err,data)=>{
@@ -368,6 +358,41 @@ app.get('/userLogout', function(req,res){
 })
 
 
+app.get('/test',function(req,res){
+	var send = {};
+	appointmentModel.find({},function(err,data){
+		if(err)
+			throw err;
+		else{
+			send.nodalCenter = data;
+			res.render('test.ejs',send);
+		}
+	})
+});
+
+var nodal;
+app.post("/getDate",function(req,res){
+	appointmentModel.find({"nodalCenter":req.body.nodalCenter,"email":""},function(err,data){
+		if(err)
+			throw err;
+		else{
+			nodal=req.body.nodalCenter;
+			//console.log(data);
+			res.send(data);
+		}
+	})
+})
+
+app.post("/getTime",function(req,res){
+	appointmentModel.find({"date":req.body.date,"email":"","nodalCenter":nodal},function(err,data){
+		if(err)
+			throw err;
+		else{
+			//console.log(data);
+			res.send(data);
+		}
+	})
+})
 app.listen(port,(err)=>{
 	if(!err){
 		console.log("Server started on port " + port);
