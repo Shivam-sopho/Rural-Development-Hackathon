@@ -1,4 +1,4 @@
-PE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
   <meta charset="UTF-8">
@@ -7,7 +7,7 @@ PE html>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <link rel="shortcut icon" href="assets/images/mbr-1622x1080.jpg" type="image/x-icon">
   <meta name="description" content="Website Builder Description">
-  <title>Time Booking </title>
+  <title>Time Booking Creation</title>
   <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
   <link rel="stylesheet" href="assets/tether/tether.min.css">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
@@ -19,9 +19,10 @@ PE html>
   <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+  
   <link rel="stylesheet" href="form.css" >
   <script src="form.js"></script>
+
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -114,9 +115,7 @@ PE html>
     </nav>
 </section>
 <hr>
-<<<<<<< HEAD
 <br>
-=======
 
 <br>
 <section class="mbr-section content8 cid-qJEXTZcQZt" id="content8-22">
@@ -132,17 +131,20 @@ PE html>
 </section>
 <hr>
 <br><br><br><br><br><br><br><br><br><br>
+<br>
+<br>
 <div class ='container-fluid'>
-<<<<<<< HEAD
 
     </div>
+
 <div class="container">
             <div class="container">
+             <form class="col s12" action='/bookingCreateSuccessful' method='post'>
                 <div class="form-container z-depth-5">
-                    <h4>Booking Time Creation</h4>
+                  <h4>Booking Time Creation</h4>
                     <br>
                       <% var array = [] %>
-=======
+
 <% var array = [] %>
         <% for(var i=0;i<nodalCenter.length;i++) { %>
           <% array.push(nodalCenter[i].nodalCenter) %>
@@ -164,43 +166,35 @@ PE html>
       </select>
                   <br>
                   <br>
-    </div>
-<div class="container">
-            <div class="container">
-                <div class="form-container z-depth-5">
-                    <h4>Booking Time Creation</h4>
-
                     <div class="row">
-                        <form class="col s12" action='/bookingCreateSuccessful' method='post'>
 
                           <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="name" type="text" name="nodalCenter">
-                                    <label for="nodalCenter">Nodal Center</label>
+                                    <input id="name" type="text" name="userName">
+                                    <label for="userName">Name</label>
                                 </div>
                             </div>
                             <br>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="name" type="text" name="date">
-                                    <label for="date">Date</label>
+                                    <input id="name" type="number" name="phone">
+                                    <label for="phone">Phone</label>
                                 </div>
                             </div>
                             <br>
                              <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="name" type="text" name="time">
-                                    <label for="time">Time</label>
+                                    <input id="name" type="text" name="email">
+                                    <label for="email">Email</label>
                                 </div>
                             </div>
                             <br>
-                                <button class="btn submitbtn" type="submit">Create</button>
+                                <button class="btn submitbtn" type="submit">Book</button>
                         </form>
                 </div>
             </div>
         </div>
-         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+         
     </div>
     </body>
 </html>

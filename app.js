@@ -148,7 +148,7 @@ app.post('/bookingCreateSuccessful',function(req,res){
 // NOTE : Carry the info regarding admin's nodal center for checking its appointments at the time of login!!!
 app.get('/checkBooking',function(req,res){
 	var ssend = {};
-	appointmentModel.find({"nodalCenter" : admlog, "filled" : 1},function(err,data){
+	appointmentModel.find({"filled" : 1},function(err,data){
 		if(err)
 			throw err;
 		else{
@@ -194,7 +194,7 @@ app.post('/successfulenrolled',function(req,res){
 //Check Enrollment
 app.get('/checkEnrollments',function(req,res){
 	var sssend = {};
-	enrollmentModel.find({"nodalCenter" : admlog},function(err,data){
+	enrollmentModel.find({},function(err,data){
 		if(err)
 			throw err;
 		else{
@@ -320,8 +320,7 @@ app.post("/getTime",function(req,res){
 	})
 })
 
-app.post("/bookedTime",(req,res)=>{
-	//console.log(req.body)
+app.post("/bookingCreateSuccessful",(req,res)=>{
 	appointmentModel.remove({ "nodalCenter": req.body.nodalCenter, "date": req.body.date , "time": req.body.time },function(err,data){
    		if(err)
    			console.log(err);
@@ -340,15 +339,29 @@ app.post("/bookedTime",(req,res)=>{
 			if(err)
 			{
 				console.log(err);
-				res.render("bookingCreateError.ejs");
+				res.render("bookingSuccessful.ejs");
 			}
 			else
 			{	
-				res.render("bookingCreateSuccessful.ejs");
+				res.render("bookingSuccessful.ejs");
 			}
 		});
   	}
   });
+});
+
+
+app.get('/enrolledClasses',function(req,res){
+	var ssend = {};
+	enrollmentModel.find({},function(err,data){
+		if(err)
+			throw err;
+		else{
+			ssend.date = data;
+			console.log(send);
+			res.render('checkClasses.ejs',ssend);
+		}
+	})
 });
 
 
@@ -358,41 +371,7 @@ app.get('/userLogout', function(req,res){
 })
 
 
-app.get('/test',function(req,res){
-	var send = {};
-	appointmentModel.find({},function(err,data){
-		if(err)
-			throw err;
-		else{
-			send.nodalCenter = data;
-			res.render('test.ejs',send);
-		}
-	})
-});
 
-var nodal;
-app.post("/getDate",function(req,res){
-	appointmentModel.find({"nodalCenter":req.body.nodalCenter,"email":""},function(err,data){
-		if(err)
-			throw err;
-		else{
-			nodal=req.body.nodalCenter;
-			//console.log(data);
-			res.send(data);
-		}
-	})
-})
-
-app.post("/getTime",function(req,res){
-	appointmentModel.find({"date":req.body.date,"email":"","nodalCenter":nodal},function(err,data){
-		if(err)
-			throw err;
-		else{
-			//console.log(data);
-			res.send(data);
-		}
-	})
-})
 app.listen(port,(err)=>{
 	if(!err){
 		console.log("Server started on port " + port);
