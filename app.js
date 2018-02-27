@@ -314,7 +314,7 @@ app.post("/getTime",function(req,res){
 		if(err)
 			throw err;
 		else{
-			//console.log(data);
+			console.log(data);
 			res.send(data);
 		}
 	})
@@ -358,6 +358,41 @@ app.get('/userLogout', function(req,res){
 })
 
 
+app.get('/test',function(req,res){
+	var send = {};
+	appointmentModel.find({},function(err,data){
+		if(err)
+			throw err;
+		else{
+			send.nodalCenter = data;
+			res.render('test.ejs',send);
+		}
+	})
+});
+
+var nodal;
+app.post("/getDate",function(req,res){
+	appointmentModel.find({"nodalCenter":req.body.nodalCenter,"email":""},function(err,data){
+		if(err)
+			throw err;
+		else{
+			nodal=req.body.nodalCenter;
+			//console.log(data);
+			res.send(data);
+		}
+	})
+})
+
+app.post("/getTime",function(req,res){
+	appointmentModel.find({"date":req.body.date,"email":"","nodalCenter":nodal},function(err,data){
+		if(err)
+			throw err;
+		else{
+			//console.log(data);
+			res.send(data);
+		}
+	})
+})
 app.listen(port,(err)=>{
 	if(!err){
 		console.log("Server started on port " + port);

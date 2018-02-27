@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><script src="form.js"></script>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script type="text/javascript">
+
+            function getDate(){
+                var parameters = {};
+                parameters.nodalCenter = document.getElementById("nodalCenter").value;
+                console.log(parameters);
+                $.post('/getDate',parameters,function(data){
+                    var arr = [];
+                    for(var i=0;i<data.length;i++){
+
+                        arr.push(data[i].date);
+                    }
+                    arr = Array.from(new Set(arr));
+                    $("#date").html("")
+                    $("#date").append("<option value='"+'Select Date'+"'>" + 'Select Date' + "</option>")
+                    for(var i=0;i<arr.length;i++){
+                        $("#date").append("<option value='"+arr[i]+"'>" + arr[i] + "</option>")
+                    }
+                })
+            }
+
+
+
+            function getTime(){
+                var parameters = {};
+                parameters.date = document.getElementById("date").value;
+                console.log(parameters);
+                $.post('/getTime',parameters,function(data){
+
+                    var arr = [];
+                    for(var i=0;i<data.length;i++){
+
+                        arr.push(data[i].time);
+                    }
+                    arr = Array.from(new Set(arr));
+                    console.log(arr)
+                    $("#time").html("")
+                    $("#time").append("<option value='"+'Select Time'+"'>" + 'Select Time' + "</option>")
+                    for(var i=0;i<arr.length;i++){
+                        $("#time").append("<option value='"+arr[i]+"'>" + arr[i] + "</option>")
+                    }
+                })
+            }
+        </script>
+
+
+    </head>
+    <body ><% var array = [] %>
+        <% for(var i=0;i<nodalCenter.length;i++) { %>
+          <% array.push(nodalCenter[i].nodalCenter) %>
+        <% } %>
+        <% array = Array.from(new Set(array)) %>
+          <select onchange="getDate()" id="nodalCenter" name="nodalCenter">
+            <option value="<%= 'Select Center'%>"><%='Select Center'%></option>
+          <% for(var i=0;i<array.length;i++) {%>
+            <option value="<%= array[i] %>"><%= array[i] %></option>
+          <% } %>
+      </select>
+
+      <select onchange="getTime()" id="date" name="date">
+        
+      </select>
+
+      <select id="time" name="time">
+        
+      </select>
+    
+    </body>
+</html>
