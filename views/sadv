@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v4.6.5, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="assets/images/mbr-1622x1080.jpg" type="image/x-icon">
+  <meta name="description" content="Website Builder Description">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons-bold/mobirise-icons-bold.css">
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
+  <link rel="stylesheet" href="assets/tether/tether.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/socicon/css/styles.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script type="text/javascript">
+
+            function getDate(){
+                var parameters = {};
+                parameters.nodalCenter = document.getElementById("nodalCenter").value;
+                console.log(parameters);
+                $.post('/getDate',parameters,function(data){
+                    var arr = [];
+                    for(var i=0;i<data.length;i++){
+
+                        arr.push(data[i].date);
+                    }
+                    arr = Array.from(new Set(arr));
+                    $("#date").html("")
+                    $("#date").append("<option value='"+'Select Date'+"'>" + 'Select Date' + "</option>")
+                    for(var i=0;i<arr.length;i++){
+                        $("#date").append("<option value='"+arr[i]+"'>" + arr[i] + "</option>")
+                    }
+                })
+            }
+
+
+
+            function getTime(){
+                var parameters = {};
+                parameters.date = document.getElementById("date").value;
+                console.log(parameters);
+                $.post('/getTime',parameters,function(data){
+
+                    var arr = [];
+                    for(var i=0;i<data.length;i++){
+
+                        arr.push(data[i].time);
+                    }
+                    arr = Array.from(new Set(arr));
+                    console.log(arr)
+                    $("#time").html("")
+                    $("#time").append("<option value='"+'Select Time'+"'>" + 'Select Time' + "</option>")
+                    for(var i=0;i<arr.length;i++){
+                        $("#time").append("<option value='"+arr[i]+"'>" + arr[i] + "</option>")
+                    }
+                })
+            }
+        </script>
+</head>
+<body>
+  <section class="menu cid-qJDGyhYL6e" once="menu" id="menu1-2u">
+ <nav class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-fixed-top navbar-toggleable-sm">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        <div class="menu-logo">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                    <a href="https://mobirise.com">
+                         <img src="assets/images/mbr-1622x1080.jpg" alt="Mobirise" title="" style="height: 3.8rem;">
+                    </a>
+                </span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href=""><span class="socicon socicon-battlenet mbr-iconfont mbr-iconfont-btn"></span>
+                        Creators Hub</a></span>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item">
+                    <a class="nav-link link text-white display-4" href="/home"><span class="mbri-home mbr-iconfont mbr-iconfont-btn"></span>
+                        
+                        Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link text-white display-4" href="/aboutUs"><span class="mbri-search mbr-iconfont mbr-iconfont-btn"></span>
+                        
+                        About Us
+                    </a>
+                </li><li class="nav-item"><a class="nav-link link text-white display-4" href="/contactUs"><span class="mbri-contact-form mbr-iconfont mbr-iconfont-btn"></span>
+                        Contact Us
+                    </a></li><li class="nav-item"><a class="nav-link link text-white display-4" href="/stats"><span class="mbri-growing-chart mbr-iconfont mbr-iconfont-btn"></span>
+                        Stats</a></li></ul>
+            
+        </div>
+    </nav>
+</section>
+
+<section class="mbr-section content8 cid-qKNn6vEapS" id="content8-2x">
+<div class="container">
+    <div class="imagebg"></div>
+        <div class="media-container-row title">
+            <div class="col-12 col-md-8">
+                <div class="mbr-section-btn align-center"><a class="btn btn-primary display-4" href="/userDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>DASHBOARD</a>
+                    <a class="btn btn-black-outline display-4" href="/userL"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>LOGOUT</a></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr>
+<br><br><br><br><br><br><br><br><br><br>
+        <div class="container">
+            <div class="container">
+                <div class="form-container z-depth-5">
+                    <h4>Booking Time Creation</h4> 
+                    <div class="row">
+                        <form class="col s12" action='/bookingCreateSuccessful' method='post'>
+                          <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="name" type="text" name="nodalCenter">
+                                    <label for="nodalCenter">Nodal Center</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="name" type="text" name="date">
+                                    <label for="date">Date</label>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="name" type="text" name="time">
+                                    <label for="time">Time</label>
+                                </div>
+                            </div>
+                                <button class="btn submitbtn" type="submit">Create</button>
+                        </form>
+                </div>
+            </div>
+        </div>
+         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        <div class="container">
+                <div class="form-container z-depth-5">
+                    <h4>Booking Time Creation</h4> 
+                    <div class="row">
+                        <form class="col s12" action='/bookedTime' method='post'>
+                          
+            <% var array = [] %>
+    		<% for(var i=0;i<nodalCenter.length;i++) { %>
+    			<% array.push(nodalCenter[i].nodalCenter) %>
+    		<% } %>
+    		<% array = Array.from(new Set(array)) %>
+					<select onchange="getDate()" id="nodalCenter" name="nodalCenter">
+						<option value="<%= 'Select Center'%>"><%='Select Center'%></option>
+  				<% for(var i=0;i<array.length;i++) {%>
+  					<option value="<%= array[i] %>"><%= array[i] %></option>
+  				<% } %>
+			</select>
+
+			<select onchange="getTime()" id="date" name="date">
+				
+			</select>
+
+			<select id="time" name="time">
+				
+			</select>
+					<div class="row">
+                                <div class="input-field col s12">
+                                    <input id="name" type="text" name="userName">
+                                    <label for="userName">User Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="name" type="number" name="phone">
+                                    <label for="phone">Phone</label>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="name" type="text" name="email">
+                                    <label for="email">Email</label>
+                                </div>
+                            </div>
+                                <button class="btn submitbtn" type="submit">Book</button>
+                        </form>
+                </div>
+            </div>
+             <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+         </div>
+    </body>
+</html>
