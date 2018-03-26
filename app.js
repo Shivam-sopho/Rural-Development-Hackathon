@@ -1,14 +1,16 @@
 const express = require('express');
 const path 	= require('path');
-//const multer  =   require('multer');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
-var passport = require('passport');
-var expressSession = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const expressSession = require('express-session');
+const expressValidator = require('express-validator');
+const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const request = require("request");
 const port = process.env.PORT || 8080;
@@ -16,10 +18,11 @@ const fs = require("fs");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var admin = require('./routes/admin');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
 mongoose.Promise = global.Promise
 mongoose.connect("mongodb://ruraldev:ruraldev@ds125578.mlab.com:25578/rural-development");
@@ -33,8 +36,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', index);
-app.use('/users', users);
+
 
 
 require('./models/User');
@@ -44,73 +46,53 @@ const adminModel = mongoose.model('Admin');
 require('./models/Appointment');
 const appointmentModel = mongoose.model('Appointment');
 require('./models/Enrollment');
-const enrollmentModel = mongoose.model('Enrollment');
+const enrollmentModel = mongoose.model('Enrollment'); 
 
 
-app.get('/home',function(req,res){
-	res.render('home.ejs');
-});
 
-app.get('/admin',function(req,res){
-	res.render('admin.ejs');
-});
+app.use('/', index);
+app.use('/user', users);
+app.use('/admin',admin);
+app.use('/register',admin);
 
 
-//Admin Register
+app.use(expressSession({
+	secret : 'secret',
+	saveUninitialized : true,
+	resave : true
+}));
 
-var salt = bcrypt.genSaltSync(15);
-var cryptedPassword;
-var crypt=function(password){
-	cryptedPassword = bcrypt.hashSync(password, salt);
-}
-app.post('/successfulAdminRegister',function(req,res){
-	crypt(req.body.password);
-	var adm = new adminModel({
-		"userName"       : req.body.userName,
-        "name"	         : req.body.name,
-        "phone"	 	  	 : req.body.phone,
-        "govtId"	  	 : req.body.govtId,
-        "email"	 	  	 : req.body.email,
-        "nodalCenter"	 : req.body.nodalCenter,
-        "password"       : cryptedPassword, 	
-	});
-	adm.save((err,data)=>{
-		if(err)
-		{
-			console.log(err);
-			res.render("adminError.ejs");
-		}
-		else
-		{
-			res.render("adminSuccessful.ejs");
-		}
-	})
-});
 
-var admlog;
-//Admin Login
+app.use(passport.initialize());
+app.use(passport.session());
 
-var send = {};
-var salt = bcrypt.genSaltSync(15);
-app.post("/adminLoggedin",(req,res)=>{
-    adminModel.find({"userName":req.body.userName},(error,data1)=>{
-    	if (data1.length) {
-    		send.nodalCenter=data1;
-    			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
-                	if(data){
-                			admlog=data1[0].nodalCenter;
-                		 	res.render("adminDashboard.ejs",send);
-                	}
-                	else{
-                    	res.render("adminErrorMessage.ejs");
-                	}
-            	});
-		}
-    	else{
-    		 res.render("adminErrorMessage.ejs");
-    	}
-    });
-});
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
+
+
+app.use(flash());
+
+/*app.use(function(req,res,next){
+	res.local.success_msg =  req.flash('success_msg');
+	res.local.error_msg = req.flash('error_msg');
+	res.local.error = req.flash('error');
+	next();
+});*/
+
 
 app.get('/adminDashboard', function(req,res){
 	res.render('adminDashboard.ejs',send);
@@ -216,67 +198,6 @@ app.get('/admLogout', function(req,res){
 
 
 
-//User Register
-
-app.get('/userL',function(req,res){
-	res.render('userL.ejs');
-});
-
-var salt = bcrypt.genSaltSync(15);
-var cryptedPassword;
-var crypt=function(password){
-	cryptedPassword = bcrypt.hashSync(password, salt);
-}
-app.post('/successfulUserRegister',function(req,res){
-	crypt(req.body.password);
-	var usr = new userModel({
-		"email"          : req.body.email,
-		"userName"       : req.body.userName,
-        "name"	         : req.body.name,
-        "phone"	 	  	 : req.body.phone,
-        "address"		 : req.body.address,
-        "password"       : cryptedPassword, 	
-	});
-	usr.save((err,data)=>{
-		if(err)
-		{
-			console.log(err);
-			res.render("userError.ejs");
-		}
-		else
-		{
-			res.render("userSuccessful.ejs");
-		}
-	})
-});
-
-
-var userlog;
-var userPhone;
-var userEmail;
-
-
-var salt = bcrypt.genSaltSync(15);
-app.post("/userLoggedin",(req,res)=>{
-    userModel.find({"userName":req.body.userName},(error,data1)=>{
-    	if (data1.length) {
-    			bcrypt.compare(req.body.password,data1[0].password,(err,data)=>{
-                	if(data){
-								userlog=data1[0].userName;
-								userPhone=data1[0].phone;
-								userEmail=data1[0].email;
-                		 		res.render("userDashboard.ejs");
-                	}
-                	else{
-                    	res.render("userErrorMessage.ejs");
-                	}
-            	});
-		}
-    	else{
-    		 res.render("userErrorMessage.ejs");
-    	}
-    });
-});
 
 
 app.get('/userDashboard', function(req,res){
