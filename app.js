@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-require('./models/user');
+require('./models/User');
 const userModel = mongoose.model('User');
 require('./models/admin');
 const adminModel = mongoose.model('Admin');
