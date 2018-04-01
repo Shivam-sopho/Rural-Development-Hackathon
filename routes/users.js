@@ -21,7 +21,7 @@ module.exports = function(app,passport){
    });
 
    //User Register
-   app.post('/successfulUserRegister',passport.authenticate('local-user-signup',{
+   app.post('/successfulUserRegister',passport.authenticate('local-signup',{
 		successRedirect :  '/userSuccessful',
 		failureRedirect :  '/userL',
 		failureFlash	: true
@@ -34,11 +34,11 @@ module.exports = function(app,passport){
 
    //User Dashboard
    app.get('/userDashboard',isLoggedIn,function(req,res){
-   		res.render('userDashboard')
+   		res.render('userDashboard',{"user" :req.user})
    });
 
    //User Login
-   app.post('/userLoggedin',passport.authenticate('local-user-login',{
+   app.post('/userLoggedin',passport.authenticate('local-login',{
         successRedirect :  '/userDashboard',
         failureRedirect : '/userL',
         failureFlash : true
@@ -48,18 +48,19 @@ module.exports = function(app,passport){
 	app.get('/timeBooking',isLoggedIn,function(req,res){
 		appointmentModel.find({},function(err,data){
 			if(err)
-				throw err;
+				console.log(err);
 			else
 			{
-				send.nodalCenter = data;
-				res.render('timeBooking.ejs',send);
+				
+				res.render('timeBooking.ejs',{"user" :req.user});
 			}
 		})
 	});
 
 	//AJAX 1
 	app.post("/getDate",isLoggedIn,function(req,res){
-		appointmentModel.find({"nodalCenter":req.body.nodalCenter,"email":""},function(err,data){
+		//var cenner
+		appointmentModel.find({"address" : req.body.address,"email":""},function(err,data){
 			if(err)
 				throw err;
 			else
@@ -105,11 +106,11 @@ module.exports = function(app,passport){
 					if(err)
 					{
 						console.log(err);
-						res.render("bookingSuccessful.ejs");
+						res.render("bookingSuccessful.ejs",{"user" :req.user});
 					}
 					else
 					{	
-						res.render("bookingSuccessful.ejs");
+						res.render("bookingSuccessful.ejs",{"user" :req.user});
 					}
 				});
   			}
@@ -124,7 +125,7 @@ module.exports = function(app,passport){
 			else
 			{
 				console.log(send);
-				res.render('checkClasses.ejs',ssend);
+				res.render('checkClasses.ejs',{"user" :req.user});
 			}
 		})
 	});	

@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 require("../models/admin");
+require("../models/user");
 require('../models/appointment');
 require('../models/enrollment');
 var Admin = mongoose.model("Admin");
@@ -32,14 +33,14 @@ module.exports = function(app,passport){
    });
 
    //Admin Successful Register
-   app.post('/register',passport.authenticate('local-admin-signup',{
+   app.post('/register',passport.authenticate('local-signup',{
 		successRedirect :  '/adminSuccessful',
 		failureRedirect :  '/admin',
 		failureFlash	: true
 	}))
 
    //Admin Successful Login
-   app.post('/adminLoggedin',passport.authenticate('local-admin-login',{
+   app.post('/adminLoggedin',passport.authenticate('local-login',{
         successRedirect :  '/adminDashboard',
         failureRedirect : '/admin',
         failureFlash : true
@@ -48,12 +49,12 @@ module.exports = function(app,passport){
    //Admin Dashboard
    app.get('/adminDashboard',isLoggedIn,function(req,res){
    		console.log(req.flash("errorMessage"))
-   		res.render('adminDashboard');
+   		res.render('adminDashboard',{"user":req.user});
    });
 
    //Admin Create's Booking
    app.get('/createBooking',isLoggedIn,function(req,res){
-		res.render('createBooking.ejs');
+		res.render('createBooking.ejs',{"user":req.user});
 	});
 
    //Admin Booking Store in database
@@ -68,31 +69,35 @@ module.exports = function(app,passport){
 			if(err)
 			{
 				console.log(err);
-				res.render("bookingCreateError.ejs");
+				res.render("bookingCreateError.ejs",{"user":req.user});
 			}
 			else
 			{
-				res.render("bookingCreateSuccessful.ejs");
+				res.render("bookingCreateSuccessful.ejs",{"user":req.user});
 			}
 	   	})
 	});
 
    //Admin Check's Booking
    app.get('/checkBooking',isLoggedIn,function(req,res){
-		appointmentModel.find({"filled" : 1},function(err,data){
+   		var checkBooking = {};
+		appointmentModel.find({"filled" : 1,"nodalCenter" : req.user.address},function(err,data){
 			if(err)
-				throw err;
+				console.log(err);
 			else
 			{
-				console.log(send);
-				res.render('checkBooking.ejs');
+				//console.log(req.user.address);
+				//console.log(data);
+				checkBooking = data;
+				//console.log(checkBooking);
+				res.render('checkBooking.ejs',{"user":req.user, checkBooking});
 			}
    	  	})
 	});
 
    //Admin Enrolls Students
    app.get('/enroll',isLoggedIn,function(req,res){
-		res.render('enroll.ejs');
+		res.render('enroll.ejs',{"user":req.user});
 	});
 
    //Admin enrollment stores in Database
@@ -112,24 +117,26 @@ module.exports = function(app,passport){
 			if(err)
 			{
 				console.log(err);
-				res.render("enrolledError.ejs");
+				res.render("enrolledError.ejs",{"user":req.user});
 			}
 			else
 			{	
-				res.render("enrolledSuccessful.ejs");
+				res.render("enrolledSuccessful.ejs",{"user":req.user});
 			}
 	  	})
 	});
 
 	//Admin Checks enrolled Students
 	app.get('/checkEnrollments',isLoggedIn,function(req,res){
-		enrollmentModel.find({},function(err,data){
+		var checkEnrollment ={};
+		enrollmentModel.find({"nodalCenter" : req.user.address},function(err,data){
 			if(err)
-				throw err;
+				console.log(err);
 			else
 			{
+				checkEnrollment=data;
 				//console.log(send);
-				res.render('checkEnrollments.ejs');
+				res.render('checkEnrollments.ejs',{"user":req.user,checkEnrollment});
 			}
 		})
 	});

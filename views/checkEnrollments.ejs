@@ -70,7 +70,8 @@
         <div class="media-container-row title">
             <div class="col-12 col-md-8">
                 <div class="mbr-section-btn align-center"><a class="btn btn-primary-outline display-4" href="/adminDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>Dashboard</a>
-                    <a class="btn btn-black-outline display-4" href="admLogout"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a></div>
+                    <a class="btn btn-black-outline display-4" href="admLogout"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a>
+                  <p style="color:#FFFFFF"><a class="btn btn-black-outline display-4"><span class></span>      <%= user.address %></a></p></div>
             </div>
         </div>
     </div>
@@ -100,9 +101,9 @@
             </thead>
             <tbody>             
             <tr>  
-    				<% for(var i=0;i<students.length;i++) { %>
+    				<% for(var i=0;i<checkEnrollment.length;i++) { %>
     					<tr>
-                      <td class="body-item mbr-fonts-style display-7"><%= students[i].name%></td><td class="body-item mbr-fonts-style display-7"><%= students[i].phone%></td><td class="body-item mbr-fonts-style display-7"><%= students[i].email%></td><td class="body-item mbr-fonts-style display-7"><%= students[i].address%></td><td class="body-item mbr-fonts-style display-7"><%= students[i].enrollDate%></td>
+                      <td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].name%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].phone%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].email%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].address%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].enrollDate%></td>
     				<% } %>
                 </tbody>
 				</table>
