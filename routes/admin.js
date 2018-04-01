@@ -143,6 +143,8 @@ module.exports = function(app,passport){
 
 	//Admin Logout
 	app.get('/admLogout',isLoggedIn,function(req,res){
-		res.render('admin.ejs');
+		req.logout()
+		res.redirect('/admin');
+
 	})
 };
