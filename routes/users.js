@@ -132,7 +132,8 @@ module.exports = function(app,passport){
 
 	//User Logout
 	app.get('/userLogout',isLoggedIn,function(req,res){
-		res.render('user.ejs');
+		req.logout();
+		res.redirect('/userL');
 	});
 
 };

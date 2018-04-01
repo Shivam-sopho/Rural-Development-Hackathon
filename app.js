@@ -43,18 +43,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-/*
-require('./models/user');
-const userModel = mongoose.model('User');
-require('./models/admin');
-const adminModel = mongoose.model('Admin');
-require('./models/appointment');
-const appointmentModel = mongoose.model('Appointment');
-require('./models/enrollment');
-const enrollmentModel = mongoose.model('Enrollment'); 
-*/
-
-
 require('./config/passport')(passport);
 require("./routes/admin")(app,passport);
 require("./routes/users")(app,passport);
