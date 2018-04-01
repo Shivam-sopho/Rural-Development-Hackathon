@@ -124,7 +124,8 @@
         <div class="media-container-row title">
             <div class="col-12 col-md-8">
                 <div class="mbr-section-btn align-center"><a class="btn btn-primary-outline display-4" href="/userDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>Dashboard</a>
-                    <a class="btn btn-black-outline display-4" href="/userL"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a></div>
+                    <a class="btn btn-black-outline display-4" href="/userL"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a>
+                  <p style="color:#FFFFFF"><a class="btn btn-black-outline display-4"><span class></span>      <%= user.name %></a></p></div>
             </div>
         </div>
     </div>
@@ -139,13 +140,13 @@
 
 <div class="container">
             <div class="container">
-             <form class="col s12" action='/bookingCreateSuccessful' method='post'>
+             <form class="col s12" action='/bookingDoneSuccessful' method='post'>
                 <div class="form-container z-depth-5">
                   <h4>Booking Time Creation</h4>
                     <br>
                       <% var array = [] %>
 
-<% var array = [] %>
+        <% var array = [] %>
         <% for(var i=0;i<nodalCenter.length;i++) { %>
           <% array.push(nodalCenter[i].nodalCenter) %>
         <% } %>
@@ -164,7 +165,7 @@
       <select id="time" name="time">
         
       </select>
-                  <br>
+                  <!--<br>
                   <br>
                     <div class="row">
 
@@ -187,11 +188,10 @@
                                     <input id="name" type="text" name="email">
                                     <label for="email">Email</label>
                                 </div>
-                            </div>
+                            </div>-->
                             <br>
                                 <button class="btn submitbtn" type="submit">Book</button>
                         </form>
-                </div>
             </div>
         </div>
          

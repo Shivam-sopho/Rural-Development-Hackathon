@@ -61,7 +61,7 @@ module.exports = function(app,passport){
    app.post('/bookingCreateSuccessful',isLoggedIn,function(req,res){
 		//console.log(admlog);
 		var appoint = new appointmentModel({
-			"nodalCenter"    : req.body.nodalCenter,
+			"nodalCenter"    : req.user.address,
         	"date"	         : req.body.date,
         	"time"	 	  	 : req.body.time
 		});
@@ -89,7 +89,7 @@ module.exports = function(app,passport){
 				//console.log(req.user.address);
 				//console.log(data);
 				checkBooking = data;
-				//console.log(checkBooking);
+				//console.log(checkBooking.userName);
 				res.render('checkBooking.ejs',{"user":req.user, checkBooking});
 			}
    	  	})

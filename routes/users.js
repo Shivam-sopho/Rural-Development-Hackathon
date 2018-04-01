@@ -46,71 +46,88 @@ module.exports = function(app,passport){
 
    //User Time Booking
 	app.get('/timeBooking',isLoggedIn,function(req,res){
-		appointmentModel.find({},function(err,data){
+		var nodalCenter= {};
+		appointmentModel.find({"filled" : 0},function(err,data){
 			if(err)
 				console.log(err);
 			else
 			{
-				
-				res.render('timeBooking.ejs',{"user" :req.user});
+				nodalCenter=data;
+				//console.log(data);
+				res.render('timeBooking.ejs',{"user" :req.user,nodalCenter});
 			}
 		})
 	});
 
+	var tempNodal;
+	var tempDate;
+	var tempTime;
 	//AJAX 1
 	app.post("/getDate",isLoggedIn,function(req,res){
-		//var cenner
-		appointmentModel.find({"address" : req.body.address,"email":""},function(err,data){
+		var date = {};
+		appointmentModel.find({"nodalCenter" : req.body.nodalCenter, "filled" : 0},function(err,data){
 			if(err)
-				throw err;
+				console.log(err);
 			else
 			{
-				nodal=req.body.nodalCenter;
+				date=data;
 				//console.log(data);
-				res.send(data);
+				//console.log(date);
+				tempNodal=req.body.nodalCenter;
+				res.send(date);
 			}
 		})
 	});
 
 	//AJAX 2
 	app.post("/getTime",isLoggedIn,function(req,res){
-		appointmentModel.find({"date":req.body.date,"email":"","nodalCenter":nodal},function(err,data){
+		var time = {};
+		appointmentModel.find({"date" : req.body.date, "nodalCenter" : tempNodal, "filled" : 0},function(err,data){
 			if(err)
-				throw err;
+				console.log(err);
 			else
 			{
-				console.log(data);
-				res.send(data);
+				tempDate=req.body.date;
+				time = data;
+				//console.log(data);
+				//console.log(temp);
+				console.log(tempDate);
+				//console.log('hiiiii');
+				res.send(time);
 			}
 		})
 	});
 
 	//User Time Booked
-	app.post("/bookingCreateSuccessful",isLoggedIn
-		,(req,res)=>{
-		appointmentModel.remove({ "nodalCenter": req.body.nodalCenter, "date": req.body.date , "time": req.body.time },function(err,data){
+	app.post("/bookingDoneSuccessful",isLoggedIn,(req,res)=>{
+			console.log('h123iiiii');
+		appointmentModel.remove({ "nodalCenter": tempNodal, "date": tempDate , "time": req.body.time },function(err,data){
 	   		if(err)
+   			{
    				console.log(err);
+   			}
    			else
    			{
+   				console.log('hiiiii');
    				var appoint = new appointmentModel({
-					"nodalCenter"    : req.body.nodalCenter,
-    	    		"date"	         : req.body.date,
+					"nodalCenter"    : tempNodal,
+    	    		"date"	         : tempDate,
         			"time"	 	  	 : req.body.time,
-        			"userName"		 : req.body.userName,
-   					"phone" 		 : user.body.phone,
-   					"email" 		 : user.body.email,
+        			"userName"		 : req.user.name,
+   					"phone" 		 : req.user.phone,
+   					"email" 		 : req.user.email,
    					"filled"	     : 1
    				});
 				appoint.save((err,data)=>{
 					if(err)
 					{
 						console.log(err);
-						res.render("bookingSuccessful.ejs",{"user" :req.user});
+						res.render("bookingSuccessful.ejs");
 					}
 					else
 					{	
-						res.render("bookingSuccessful.ejs",{"user" :req.user});
+						console.log('success');
+						res.render("bookingSuccessful.ejs");
 					}
 				});
   			}
