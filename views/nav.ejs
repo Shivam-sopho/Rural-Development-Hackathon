@@ -33,8 +33,11 @@
   </head>
   <body>
     <div id="floating-panel">
-      <input id="address" type="textbox" value="Enter the place">
-      <input id="submit" type="button" value="Geocode">
+      <% var address= [] %>
+        <% for(var i=0;i<locat.length;i++){%>
+          <% address.push(locat[i].address); %>
+        <% } %>
+        <% address = Array.from(new Set(address)) %> 
     </div>
     <div id="map"></div>
     <script>
@@ -44,14 +47,22 @@
           center: {lat: 23.3441, lng: 85.3096}
         });
         var geocoder = new google.maps.Geocoder();
-
-        document.getElementById('submit').addEventListener('click', function() {
-          geocodeAddress(geocoder, map);
-        });
+        var n = <%= locat.length %>
+        var a = <%-JSON.stringify(address) %>
+        for(var i=0;i<n;i++){
+          console.log(a[i]);
+          geocodeAddress(geocoder, map, a[i]);
+        }
+        
+        
+        //geocodeAddress(geocoder, map,"muzaffarpur");
+        /*document.getElementById('submit').addEventListener('click', function() {
+          
+        });*/
       }
 
-      function geocodeAddress(geocoder, resultsMap) {
-        var address = document.getElementById('address').value;
+      function geocodeAddress(geocoder, resultsMap,address) {
+        //var address = document.getElementById('address').value;
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);

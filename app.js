@@ -47,7 +47,23 @@ require('./config/passport')(passport);
 require("./routes/admin")(app,passport);
 require("./routes/users")(app,passport);
 
+require('./models/user');
+const User = mongoose.model('User');
 
+app.get('/nav',function(req,res){
+	var locat = {};
+	User.find({'userType' : 'ADMIN'},function(err,data){
+		if(err)
+			console.log(err);
+		else
+		{
+			locat.locat=data;
+			console.log(locat);
+			
+			res.render('nav',locat);
+		}
+	})
+})
 
 app.listen(port,(err)=>{
 	if(!err){
