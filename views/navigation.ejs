@@ -1,11 +1,32 @@
 <!DOCTYPE html>
-<head>
-	<title>MAPS</title>
-	<script type="text/javascript">
-	</script>
-</head>
-<body>
-	<script>
+<html>
+  <head>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    	$('#geolocation').hide();
+    	$('#track').show();
+    </script>
+  </head>
+  <body>
+  	<div id ='geolocation'>
+    <div id="map"></div>
+    <script>
       // Note: This example requires that you consent to location sharing when
       // prompted by your browser. If you see the error "The Geolocation service
       // failed.", it means you probably did not give permission for the browser to
@@ -27,15 +48,17 @@
             var pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
-
-              //lat=lat;
-              //lng=lng;
-             // var temp="https://maps.googleapis.com/maps/api/geocode/json?latlng=lat,lng&key=AIzaSyDL-fdxcM_dU6W5udqLnGeceFJ7F_tQt2c"
             };
             lat=pos.lat;
             lng=pos.lng;
-            
-           //var temp="https://maps.googleapis.com/maps/api/geocode/json?latlng=lat,lng&key=AIzaSyDL-fdxcM_dU6W5udqLnGeceFJ7F_tQt2c"
+            var origin = lat+' '+lng;
+            document.getElementById('val').innerHTML = origin;
+            //console.log(origin);
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Your Current Location');
+            infoWindow.open(map);
+            map.setCenter(pos);
+
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -50,23 +73,22 @@
         infoWindow.setContent(browserHasGeolocation ?
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
-        //infoWindow.open(map);
+        infoWindow.open(map);
       }
-
     </script>
     <script async defer
-    	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD18to1SISoABV2pzXMH79XK0sJ3hUteQA
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD18to1SISoABV2pzXMH79XK0sJ3hUteQA
 		&callback=initMap">
     </script>
+</div>
+<div id ='track'>
 	<iframe
   			width="1350"
   			height="600"
   			frameborder="0" style="border:0"
-  			onload="this.src='https://www.google.com/maps/embed/v1/directions?key=AIzaSyD18to1SISoABV2pzXMH79XK0sJ3hUteQA&origin='+lat+' '+lng+'lng&destination=<%= nodal[0].nodalCenter%>'"
+  			src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyD18to1SISoABV2pzXMH79XK0sJ3hUteQA&origin=+'origin'+&destination=<%= nodal[0].nodalCenter%>"
   		 allowfullscreen>
 	</iframe>
-</body>
-<script>
-
-</script>
+</div>
+ </body>
 </html>
