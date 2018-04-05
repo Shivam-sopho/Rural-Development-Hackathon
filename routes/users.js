@@ -44,6 +44,20 @@ module.exports = function(app,passport){
         failureFlash : true
     }));
 
+   //Maps
+   app.get('/map',isLoggedIn,function(req,res){
+	var locat = {};
+	User.find({'userType' : 'ADMIN'},function(err,data){
+		if(err)
+			console.log(err);
+		else
+		{
+			locat.locat=data;
+			//console.log(locat);
+			res.render('nav',locat);
+		}
+	})
+})
    //User Time Booking
 	app.get('/timeBooking',isLoggedIn,function(req,res){
 		var nodalCenter= {};
@@ -146,6 +160,23 @@ module.exports = function(app,passport){
 			}
 		})
 	});	
+
+	//User Navigation
+	app.get('/navigation',isLoggedIn,function(req,res){
+		var email = req.user.email;
+		var nodal={};
+		appointmentModel.find({'email' : email},function(err,data){
+			if(err)
+				console.log(err);
+			else
+			{
+				nodal.nodal = data;
+				//console.log(nodal);
+				res.render('navigation',nodal);
+			}
+
+		})
+	})
 
 	//User Logout
 	app.get('/userLogout',isLoggedIn,function(req,res){
