@@ -54,7 +54,7 @@ module.exports = function(app,passport){
 		{
 			locat.locat=data;
 			//console.log(locat);
-			res.render('nav',locat);
+			res.render('map',locat);
 		}
 	})
 })
