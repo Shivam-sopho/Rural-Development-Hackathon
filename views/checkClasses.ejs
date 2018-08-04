@@ -68,7 +68,7 @@
     <div class="container">
         <div class="media-container-row title">
             <div class="col-12 col-md-8">
-                <div class="mbr-section-btn align-center"><a class="btn btn-primary-outline display-4" href="/adminDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>Dashboard</a>
+                <div class="mbr-section-btn align-center"><a class="btn btn-primary-outline display-4" href="/userDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>Dashboard</a>
                     <a class="btn btn-black-outline display-4" href="/admin"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a>
                   <p style="color:#FFFFFF"><a class="btn btn-black-outline display-4"><span class></span>      <%= user.address %></a></p></div>
             </div>
@@ -93,13 +93,14 @@
            
               <th class="head-item mbr-fonts-style display-5">Nodal Center</th>
               <th class="head-item mbr-fonts-style display-5">Enrollment Date</th>
+              <th class="head-item mbr-fonts-style display-5">Feedback</th>
             </tr>
             </thead>
             <tbody>             
             <tr>  
-    				<% for(var i=0;i<date.length;i++) { %>
+    				<% for(var i=0;i<clas.length;i++) { %>
     					<tr>
-                            </td><td class="body-item mbr-fonts-style display-7"><%= date[i].nodalCenter%></td><td class="body-item mbr-fonts-style display-7"><%= date[i].enrollDate%></td></tr><tr> 
+                            </td><td class="body-item mbr-fonts-style display-7"><%= clas[i].nodalCenter%></td><td class="body-item mbr-fonts-style display-7"><%= clas[i].enrollDate%></td><td><a href="/feedback">Click Here to provide Feedback.</a></tr><tr> 
   					    </tr>
     				<% } %>
                 </tbody>

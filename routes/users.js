@@ -114,52 +114,83 @@ module.exports = function(app,passport){
 
 	//User Time Booked
 	app.post("/bookingDoneSuccessful",isLoggedIn,(req,res)=>{
-			console.log('h123iiiii');
-		appointmentModel.remove({ "nodalCenter": tempNodal, "date": tempDate , "time": req.body.time },function(err,data){
+			//console.log('h123iiiii');
+		appointmentModel.findOneAndUpdate({ "nodalCenter": tempNodal, "date": tempDate , "time": req.body.time },{"userName" : req.user.name,
+			"phone":req.user.phone,"email":req.user.email,"filled":1},function(err,data){
 	   		if(err)
    			{
    				console.log(err);
+   				res.render("bookingSuccessful.ejs");
    			}
    			else
    			{
-   				console.log('hiiiii');
-   				var appoint = new appointmentModel({
-					"nodalCenter"    : tempNodal,
-    	    		"date"	         : tempDate,
-        			"time"	 	  	 : req.body.time,
-        			"userName"		 : req.user.name,
-   					"phone" 		 : req.user.phone,
-   					"email" 		 : req.user.email,
-   					"filled"	     : 1
-   				});
-				appoint.save((err,data)=>{
-					if(err)
-					{
-						console.log(err);
-						res.render("bookingSuccessful.ejs");
-					}
-					else
-					{	
-						console.log('success');
-						res.render("bookingSuccessful.ejs");
-					}
-				});
+					console.log('success');
+					res.render("bookingSuccessful.ejs");
   			}
   		});
 	});
 
 	//User Checks enrolled classes
+	//console.log("user":req.user.phone);
 	app.get('/enrolledClasses',isLoggedIn,function(req,res){
-		enrollmentModel.find({},function(err,data){
+		//console.log("hi");
+		enrollmentModel.find({"phone":req.user.phone},function(err,data){
+			//console.log(data);
 			if(err)
 				throw err;
 			else
 			{
-				console.log(send);
-				res.render('checkClasses.ejs',{"user" :req.user});
+				//console.log(data);
+				clas=data;
+				//console.log(data[].phone);
+				res.render('checkClasses.ejs',{"user" :req.user,clas});
 			}
 		})
 	});	
+
+	//Feedback
+	app.get('/feedback',isLoggedIn,function(req,res){
+			res.render('feedback.ejs',{"user":req.user});
+	})
+
+	app.post('/successFeedback',isLoggedIn,function(req,res){
+		enrollmentModel.findOneAndUpdate({"phone": req.user.phone}, {"customerFeedback": req.body.feedback},function(err,data){
+			if(err)
+				console.log(err)
+			else
+			{
+				// var enroll=new enrollmentModel({
+				// 	"name": req.user.name,
+    // 				"phone": req.user.phone,
+    // 				"nodalCenter": data[0].nodalCenter,
+    // 				"enrollDate": data[0].enrollDate,
+    // 				"address": req.user.address,
+    // 				"email": req.user.email,
+    // 				"customerFeedback": req.body.feedback,
+    // 				"customerRating": "Not provided",
+    // 				"adminRemarks": "",
+				// });
+				// enroll.save((err,data)=>{
+				// 	if(err)
+				// 	{
+				// 		console.log(err);
+				// 		res.render("bookingSuccessful.ejs");
+				// 	}
+				// 	else
+				// 	{	
+				// 		console.log('success');
+				// 		res.render("home.ejs");
+				// 	}
+				// });
+
+				console.log('success');
+				res.render("userDashboard.ejs");
+
+
+			}
+		});
+	});
+
 
 	//User Navigation
 	app.get('/navigation',isLoggedIn,function(req,res){

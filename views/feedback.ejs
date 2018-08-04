@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html >
 <head>
-  <!-- Site made with Mobirise Website Builder v4.6.5, https://mobirise.com -->
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="generator" content="Mobirise v4.6.5, mobirise.com">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <link rel="shortcut icon" href="assets/images/mbr-1622x1080.jpg" type="image/x-icon">
   <meta name="description" content="Website Builder Description">
-  <title>Enrollment Checking</title>
+  <title>Feedback</title>
   <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
   <link rel="stylesheet" href="assets/tether/tether.min.css">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
@@ -69,8 +68,8 @@
     <div class="container">
         <div class="media-container-row title">
             <div class="col-12 col-md-8">
-                <div class="mbr-section-btn align-center"><a class="btn btn-primary-outline display-4" href="/adminDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>Dashboard</a>
-                    <a class="btn btn-black-outline display-4" href="admLogout"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a>
+                <div class="mbr-section-btn align-center"><a class="btn btn-primary-outline display-4" href="/userDashboard"><span class="mbri-briefcase mbr-iconfont mbr-iconfont-btn"></span>Dashboard</a>
+                    <a class="btn btn-black-outline display-4" href="/admLogout"><span class="mbri-login mbr-iconfont mbr-iconfont-btn"></span>Log Out</a>
                   <p style="color:#FFFFFF"><a class="btn btn-black-outline display-4"><span class></span>      <%= user.address %></a></p></div>
             </div>
         </div>
@@ -80,7 +79,7 @@
 <section class="section-table cid-qJJ05RyTTi" id="table1-28"> 
   <div class="container container-table">
       <h2 class="mbr-section-title mbr-fonts-style align-center pb-3 display-2">
-          Enrolled Students</h2>
+         Feedback</h2>
       
       <div class="table-wrapper">
         <div class="container">
@@ -88,26 +87,12 @@
         </div>
 
         <div class="container scroll">
-          <table class="table" cellspacing="0">
-            <thead>
-              <tr class="table-heads ">                
-              <th class="head-item mbr-fonts-style display-5">Name</th>
-              <th class="head-item mbr-fonts-style display-5">Phone</th>
-              <th class="head-item mbr-fonts-style display-5">Email ID</th>
-              <th class="head-item mbr-fonts-style display-5">Address</th>
-              <th class="head-item mbr-fonts-style display-5">Date Of Enrollment</th>
-              <th class="head-item mbr-fonts-style display-5">Feedback</th>
-              
-            </tr>
-            </thead>
-            <tbody>             
-            <tr>  
-    				<% for(var i=0;i<checkEnrollment.length;i++) { %>
-    					<tr>
-                      <td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].name%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].phone%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].email%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].address%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].enrollDate%></td><td class="body-item mbr-fonts-style display-7"><%= checkEnrollment[i].customerFeedback%></td>
-    				<% } %>
-                </tbody>
-				</table>
+          <form action="/successFeedback" method ="post">
+              Write : <input type="text" name="feedback"><br>
+              <input type="submit" value="Submit">
+          </form>
+          </div>
 
 
- </body></html>
+  </body>
+  </html>
